@@ -1,0 +1,84 @@
+<h1>MonoMac 0.4 is out</h1>
+
+	<p>We have just released MonoMac 0.4.  Installation is very
+	easy, just <a title="MonoMac web site"
+	href="http://www.mono-project.com/MonoMac#Obtaining_MonoMac">follow
+	the steps</a> in our MonoMac site.
+
+<div class="alignright" style="width: 310px">
+	<a href="http://monomac.files.wordpress.com/2010/11/stillmotion.png">
+	<img class="size-medium wp-image-12" title="stillmotion"
+	     src="http://monomac.files.wordpress.com/2010/11/stillmotion.png?w=300&#038;h=172"
+	     alt="Still Motion sample in C#" width="300"
+	     height="172"/>
+	</a><p class="wp-caption-text">StillMotion C# sample</p>
+</div>
+
+	<p>We are very happy with this release as this is the first
+	time that MonoMac can be used to build real applications for
+	OSX.  There are three major reasons for this:
+	
+	<ul>
+		<li>Our API coverage for all core Mac APIs is in place.</li>
+		<li>We have completed many of the gaps in the MonoMac
+		engine.</li>
+		<li>With our community, we have been <a title="MonoMac sample
+		source code"
+		href="https://github.com/mono/monomac/tree/master/samples/">porting
+		various samples</a> that have helped us polish the API and
+		make sure that it is natural and usable for C#
+		programmers.</li>
+	</ul>
+	
+	<p>In addition to those fundamental changes, MonoDevelop now
+	also sports a new NSDocument-based template for new projects
+	which will come in very handy for many
+	developers.
+
+	<p>The major changes in MonoMac 0.4 from version 0.2 released
+	in early November are:
+	<ul>
+	    <li>MacCore (code shared with MonoTouch):
+	    <ul>
+	        <li>Support for Key Value Observing with C#</li>
+	        <li>Foundation extensions:
+	        <ul>
+	            <li>C# friendly NSNotificationCenter APIs</li>
+	            <li>NSPredicate support</li>
+	            <li>NSMetadata support</li>
+	            <li>Strongly typed NSRunLoop</li>
+	            <li>Extended NSError, NSMutableData,</li>
+	        </ul>
+	        </li>
+	        <li>CoreVideo framework bindings</li>
+	        <li>Security framework bindings</li>
+	        <li>CoreGraphics support for PDF files</li>
+	    </ul>
+	    </li>
+	    <li>MonoMac:
+	    <ul>
+	      <li>QTKit framework bindings</li>
+	      <li>NSDocument templates in MonoDevelop</li>
+	      <li>WebKit DOM APIs</li>
+	      <li>CoreImage APIs</li>
+	      <li>ECMA XML Documentation stubs are now in place</li>
+	      <li>Lots
+	      of <a href="https://github.com/mono/monomac/tree/master/samples/">samples</a>!</li>
+	    </ul>
+	    </li>
+	</ul>
+	
+	<p>Michael Hutchinson has
+	a <a href="http://mjhutchinson.com/journal/2010/06/09/monomac_in_monodevelop">walk
+	through on using MonoMac with MonoDevelop</a> that will get
+	you up and running quickly.
+
+	<p>We are still looking for contributors to help us bring more
+	samples to MonoMac, create
+	more <a href="https://github.com/mono/monodevelop/tree/master/extras/MonoDevelop.MonoMac/MonoDevelop.MonoMac/templates/">MonoDevelop
+	templates</a> and help us add more of the system libraries to
+	MonoMac.  If you want to join us, check out
+	the <a href="http://mono.1490590.n4.nabble.com/Mono-OSX-f1546893.html;cid=1291392004664-863">mono-osx
+	mailing list</a> and we are on the IRC channel #monomac on the
+	server irc.gnome.org.
+

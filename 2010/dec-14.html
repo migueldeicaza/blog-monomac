@@ -1,0 +1,85 @@
+<h1>The @" syntax in Objective-C vs C#</h1>
+
+	<p>A common mistake that I see in some of the code from our
+	customers, or from contributed samples to the MonoMac
+	repository is the use of the @"string" syntax in C# programs.
+	
+	<b>Summary:</b> do not use the @"..." when porting Objective-C
+	samples to C#.
+	
+<h3>String Syntax in Objective-C and C#</h3>
+
+	<p>Objective-C supports two kinds of string literals in your
+	source code, strings that are surrounded by double-quotes and
+	strings that are prefixed with the at-sign and then double
+	quotes.
+	
+	<p>The first kind are zero-terminated C-style strings.  For
+	example the string "foo" is encoded by the compiler as the
+	following four bytes: 'f', 'o', 'o' and zero plus the address
+	of the string at the location where this is referenced.
+	
+	<p>The second kind, for example @"Hello World" is a
+	CoreFoundation string, and the compiler has to encode by
+	creating a static instance of a CoreFoundation CFString
+	object: it has a class identifier, some object flags, a
+	pointer to the data ('foo' in this case) and the length of the
+	string.
+	
+	<p>In both the c-string style and the CFString style, escape
+	sequences are processed by the compiler.  This means that if
+	you use "1\n2" or @"1\n2" this will produce in both cases a
+	string consisting of the '1' character followed by a newline
+	(byte value 10) and the '2' character.
+	
+	<p>In C# the syntax @"string" does not mean "encode as a
+	CFString" object.  Instead it is
+	a<a href="http://msdn.microsoft.com/en-us/library/362314fe(v=vs.71).aspx">
+	quoted-string literal</a>, and it instructs the compiler to
+	avoid performing escape sequence processing.  In C# the
+	strings "1\n2" and @"1\n2" have respectively lengths 3 and 4.
+	The former one consists of the characters '1', newline (byte
+	value 10) and character '2'.  While the latter consists of the
+	characters '1', '\', 'n' and '2'.
+	
+<h3>System.String vs Foundation.NSString in MonoMac/MonoTouch</h3>
+
+	<p>In the MonoTouch/MonoMac binding strings are almost always
+	exposed in the binding with the native C# string type
+	(System.String).  Any conversions between the C# string and
+	the Objective-C string type are done by the runtime.
+	
+	<p>There are a handful of places where we must expose NSString
+	values instead of strings.  This is usually necessary when the
+	underlying Objective-C code performs reference comparisons
+	instead of content comparisons for strings.  Some Objective-C
+	APIs for example use these strings as special "tokens" that
+	you must pass verbatim in your application to a method.
+	
+	<p>We typically use those for notification names, keys in
+	dictionaries and a handful of other places.  You will notice
+	in those handful of cases that Mono's API's expose an NSString
+	parameter or return value instead of a string parameter or
+	return value.
+	
+	<p>For example if you have a AddNotification (NSString key) API, you would typically use it like this:
+	
+<pre class="code-csharp">
+	// example class exposing a notificatin as an NSString:
+	// class SomeClass {
+	//        NSString WakeUpNotification { get; }
+	// }
+	
+	AddNotification (SomeClass.WakeUpNotification);
+</pre>
+
+<h3>Conversions</h3>
+
+	<p>Converting from a C# string to an NSString is easy, all you have to do is call new NSString ("mystring").
+	
+	<p>To go the other way around from an NSString to a string,
+	you can either use an explicit cast (this is the recommended
+	design pattern from
+	the <a href="http://www.amazon.com/gp/product/0321545613?ie=UTF8&amp;tag=tiraniaorg-20&amp;linkCode=as2&amp;camp=1789&amp;creative=390957&amp;creativeASIN=0321545613">Framework
+	Design Guidelines</a>) or you can use the ToString () method
+	on an NSString.
