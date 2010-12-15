@@ -1,0 +1,112 @@
+<h1>Improving upon dictionary bindings.</h1>
+
+	<p>iOS and OSX expose many of their APIs as dictionaries.
+	This means that instead of having properties or methods to
+	configure a particular object, the configuration takes place
+	by creating dictionaries that use some special keys with their
+	associated values.  These APIs are not well suited for
+	exploration from the IDE or from
+	our <a href="http://www.mono-project.com/CsharpRepl">REPL</a>.
+	The APIs typically look like this:
+
+	<pre class="code-csharp">
+CFStringRef keys[] = {
+    kCTFontAttributeName,
+    kCTForegroundColorAttributeName
+};
+CFTypeRef  bval[] = {
+    cfListLineCTFontRef,
+    CGColorGetConstantColor(kCGColorBlack)
+},
+
+attr = CFDictionaryCreate (kCFAllocatorDefault,
+        (const void **) &amp;keys, (const void **) &amp;bval,
+        sizeof(keys) / sizeof(keys[0]), &amp;kCFTypeDictionaryKeyCallBacks,
+        &amp;kCFTypeDictionaryValueCallBacks);
+
+astr = CFAttributedStringCreate(kCFAllocatorDefault, CFSTR("FFFFFF"), attr);[/sourcecode]
+</pre>
+
+	<p>To make the API more easy to discover through intellisense,
+	and our assembly browser, we try to turn all of the
+	Dictionary-based APIs into strongly typed classes that hide
+	the dictionary, the names of the keys, and the types of the
+	keys required.  The responsibility for getting the types
+	right, to get the encoding working and to figure out which
+	keys are valid or required in a dictionary are shifted from
+	the programmer to the framework developers (in this case,
+	MonoTouch and MonoMac developers).
+
+	<p>What we typically do is we create a type that exposes all
+	of the properties that might be supported by the dictionary,
+	and we provide nullable version of them, for example, in the
+	above case, Mono's implementation lives in the
+	CFStringAttributes class, and the properties that we expose
+	are these:
+
+<pre class="code-csharp">
+public class CFStringAttributes ()
+{
+    public CTFont Font { get; set; }
+    public CGColor ForegroundColor { get; set; }
+    [...]
+}</pre>
+
+
+	<p>Our users then instantiate configuration objects like this:
+
+<pre class="code-csharp">var attrs = new CFStringAttributes () {
+    Font = listLineCTFont,
+    ForegroundColor = UIColor.Black.CGColor
+};
+var astr = new NSAttributedString ("FFFFFF"), attrs);</pre>
+
+
+	<p>When you create your CFStringAttribute and start a new-line
+	to enter properties, MonoDevelop knows the possible property
+	values that you can initialize in the constructor, avoiding an
+	entire trip to the documentation to figure out what is the key
+	that you should use, the value and its encoding.  It is all
+	kept on type-safe datatypes.
+
+	<p>There is a second class of APIs, mostly in the Audio and
+	Video APIs that exposes a whole set of properties behind
+	fooGetProperty and fooSetProperty APIs.  Those APIs tend to be
+	weakly typed, and take both a key, and depending on the key, a
+	pointer to some value.  If you feed the wrong values to the
+	program, your application could crash or corrupt its heap.  In
+	these cases we have also walked away from exposing the
+	low-level GetProperty/SetProperty methods, and instead exposed
+	strongly-typed C# properties.
+
+	<p>This is an example from the AudioFile API:
+
+	<pre class="code-csharp">
+        AudioFileGetProperty (
+                audioFileID,
+                kAudioFilePropertyPacketSizeUpperBound,
+                &amp;propertySize,
+                &amp;maxPacketSize
+        );</pre>
+
+	<p>In the above case, we are probing for the maximum packet
+	size for the file.  The user has to find and pass the proper
+	constant (kAudioFilePropertyPacketSizeUpperBound), the size of
+	the object (this is a simple validation system to eliminate a
+	certain class of memory corruption erors), the address of the
+	variable that will get the result back, and then determine the
+	proper type for the property (maxPacketSize).
+
+	<P>What we have tried to do with MonoTouch/MonoMac is hide all
+	of that complexity, and instead we expose strongly typed
+	properties, in this case the equivalent code is:
+
+<pre class="code-csharp">
+var maxPacketSize = audioFile.PacketSizeUpperBound;
+</pre>
+
+	<p>The property is available as well for intellisense, so it
+	is a lot simpler to see what is going on behind the scenes,
+	shows up on the debugger window, on the interactive shell and
+	means that scripting languages can access it without having to
+	resort to reading C API documentation.

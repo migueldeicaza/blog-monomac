@@ -1,0 +1,81 @@
+<h1>NSNumbers, NSValues, Dictionaries and Arrays</h1>
+
+	<p>A couple of days
+	ago, <a href="http://jacksonh.tumblr.com/">Jackson</a> pointed
+	out that one of the samples in this blog could be further
+	simplified if we took advantage of C#'s params arguments.  The
+	sample in question was this code snippet from QTRecorder, used
+	to return an NSSet:
+
+	<pre class="code-csharp">
+[Export]
+public static NSSet keyPathsForValuesAffectingHasRecordingDevice ()
+{
+    return new NSSet (new string [] {"SelectedVideoDevice", "SelectedAudioDevice"});
+}
+</pre>
+
+	<p>In the above example, we have to manually construct the
+	string array, so that we can call the NSSet (string [] args)
+	constructor.  Jackson correctly pointed out that the above
+	could be simplified if we introduced an NSSet (params string
+	[] args) constructor.  This lets the compiler do the work for
+	us, so the sample above can be written like this instead:
+
+<pre class="code-csharp">
+[Export]
+public static NSSet keyPathsForValuesAffectingHasRecordingDevice ()
+{
+    return new NSSet ("SelectedVideoDevice", "SelectedAudioDevice");
+}
+</pre>
+
+	<p>This got me thinking about another possible improvement to
+	the API.  In a number of places in the MonoMac/MonoTouch API
+	it is necessary to pass numbers, strings, booleans, points,
+	rectangles, affine transforms and 3D transforms in
+	NSDictionary and NSArray objects.
+
+	<p>Since Objective-C does not have language-assisted
+	auto-boxing like C# does, programmers have to manually box
+	those in either NSValue types or NSNumber types.  An NSNumber
+	can contain booleans, 16, 32 and 64 bit integers and unsigned
+	integers as well as floats and doubles.  NSValues are
+	typically used to box points, rectangles, sizes and 2D and 3D
+	affine transformations.
+
+	<p>In a few of the current samples we have code like this:
+
+<pre class="code-csharp">
+var objects = new NSObject [] {&nbsp;
+    new NSNumber (13),
+    new NSNumber ((float) 0.5) };
+var keys = new NSObject [] {
+    new NSString ("speed"),
+    new NSString ("volume") };
+var dict = NSDictionary.FromObjectsAndKeys (objects, keys);
+</pre>
+
+	<p>The above clearly is too verbose for no good reason.  We
+	have now introduced methods that take general purpose object
+	[] arrays, containing regular C# data types and will do the
+	automatic boxing:
+
+<pre class="code-csharp">
+var objects = new NSObject [] {&nbsp;13, 0.5 };
+var keys = new NSObject [] {&nbsp;"speed", "volume" };
+var dict = NSDictionary.FromObjectsAndKeys (objects, keys);
+</pre>
+
+	<p>The method that does the object to NSObject conversion is a
+	convenience static method in the NSObject class, with the
+	following signature:
+
+<pre class="code-csharp">
+public static NSObject FromObject (object obj);
+</pre>
+
+	<p>The function can be used to convert nulls, booleans,
+	numbers, strings, IntPtrs, SizeF, RectangleF, PointF on both
+	MonoMac and MonoTouch and in MonoTouch it additionally
+	supports CGAffineTransform, CATransform3D and UIEdgeInsets.

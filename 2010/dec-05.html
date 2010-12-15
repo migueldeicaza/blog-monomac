@@ -1,0 +1,18 @@
+<h1>Error Reporting Pattern in MonoMac</h1>
+
+	<p>When writing code that reports errors to the user, usually
+	when I get back an NSError result, I use the following code
+	snippet to show it:
+	
+	<pre class="code-csharp">if (err != null){
+   NSAlert.WithError (err).BeginSheet (Window, delegate {
+       // Any needed cleanup code can go here,
+       // it is invoked when the Sheet goes away.
+   });
+   return;
+}</pre>
+
+	<p>The above creates an NSAlert object using the WithError
+	factory method, and then invokes the BeginSheet method to
+	present this modally to the user.  Usually you can put any
+	cleanup code in the body of the provided delegate.
