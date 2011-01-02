@@ -1,0 +1,81 @@
+<h1>MonoMac Happy Holidays Edition is out!</h1>
+
+      
+	<p>Just in time for your holidays, we have baked a new version
+	of <a href="http://mono-project.com/MonoMac">MonoMac</a>.  As
+	usual, installation is very easy,
+	just <a href="http://www.mono-project.com/MonoMac#Obtaining_MonoMac">follow
+	these steps</a>.
+ 
+	<p>As for some stats: 224 developers downloaded the MonoMac
+	0.4 add-in for MonoDevelop in the previous release, not bad at
+	all!
+ 
+	<center> 
+	<img src="http://tirania.org/shots/1012150251iPp5lcHM.png"> 
+	</center> 
+ 
+	<p>These are the changes since MonoMac 0.4
+	
+	<ul> 
+		<li><a href="http://mono.ximian.com/monomac-docs/">API Documentation</a>!
+	<ul> 
+		<li>Built on JPobst's <a href="https://github.com/jpobst/Kipunji">new documentation engine</a></li> 
+		<li>There are mostly automatically generated stubs now</li> 
+	</ul> 
+	</li> 
+		<li>New in CoreAnimation:
+	<ul> 
+		<li>Layout managers</li> 
+		<li>Constrained layout manager</li> 
+		<li>CATextLayer can now set its font with the WeakFont property, or the SetFont () strong types.</li> 
+	</ul> 
+	</li> 
+		<li>CoreGraphics:
+	<ul> 
+		<li>CGAffineTransform.Invert () method to obtain the inverse of an affine transformation</li> 
+	</ul> 
+	</li> 
+		<li>Foundation
+	<ul> 
+		<li>NSObject.FromObject method automatically boxes .NET types into NSValue, NSString or NSNumber objects.</li> 
+		<li>Convenience function to create NSArrays from object [] arrays and using the new NSObject boxing functionality.</li> 
+		<li>New NSIndexSet convenience factory method and ToArray method</li> 
+		<li>NSDictionary and NSMutableDictionary have convenience methods that take object [] arrays, and do the boxing automatically (using the new NSArray functionality described above)</li> 
+	</ul> 
+	</li> 
+		<li>AppKit:
+	<ul> 
+		<li>DoubleClick event on views that have support for double click actions (instead of using the DoubleAction selector + Target)</li> 
+		<li>NSTableView has a new Source property that can be used to blend both Delegate and the table view data source into one (NSTableViewSource which combines NSTableViewDataSource and NSTableViewDelegate)</li> 
+		<li>New: NSPredicate family of classes</li> 
+		<li>New: NSRuleEditor</li> 
+	</ul> 
+	</li> 
+		<li>AddressBook library:
+	<ul> 
+		<li>We used to ship the source, but now it is included in the binary library.</li> 
+	</ul> 
+	</li> 
+		<li>CoreImage:
+	<ul> 
+		<li>New in this release.</li> 
+	</ul> 
+	</li> 
+	<li>WebKit:
+	<ul> 
+		<li>Many events that were previously only exposed as Objective-C style delegates are now proper C# events.</li> 
+	</ul> 
+	</li> 
+	<li>Engine:
+	<ul> 
+		<li>Improved methods with return structures
+		<li>Improved string [] marshalling
+		<li>Now with INativeObject marshalling
+	</ul> 
+	</li> 
+	</ul> 
+ 
+	<p>We have also updated
+	the <a href="https://github.com/mono/monomac/tree/master/samples">samples</a> 
+	and added a few more.
