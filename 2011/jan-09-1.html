@@ -1,0 +1,83 @@
+<h1>New MonoMac Refresh!</h1>
+
+	<p>As part of today's release of
+	the <a href="http://tirania.org/monomac/archive/2011/Jan-09.html">Mono
+	Packager for OSX</a> we have issued a new MonoMac refresh.
+
+	<p>As we create more sample code, and start to write real
+	applications with MonoMac, we have updated the API to be
+	simpler, cleaner and more comprehensive.   This release is all
+	about small incremental improvements to the MonoMac API.
+
+	<p>As usual, we have updated the
+	our <a href="http://mono.ximian.com/monomac-docs/">MonoMac API documentation
+	MonoMac API documentation</a>.   If you are thinking about
+	getting started with MonoMac, we strongly recommend you read
+	our <a href="http://www.mono-project.com/MonoMac">MonoMac</a>
+	page for some useful links and tutorials.
+
+<h3>Statistics</h3>
+
+	<p>MonoMac 0.4 was installed by 263 developers, MonoMac 0.5 by
+	369 developers.   Interesting considering that the holidays
+	are a slow season:
+
+	<center>
+	<img src="http://tirania.org/shots/1101091106IHKGeOBC.png">
+	</center>
+
+<h3>Apps!</h3>
+
+	<p><a href="http://twitter.com/#!/praeclarum">Frank
+	Krueger</a> the creator
+	of <a href="http://icircuitapp.com/">iCircuit</a> a real-time
+	circuit emulator and editor for the iPad/iPhone has started a
+	port of iCircuit to MacOS X using MonoMac:
+
+	<center>
+	<img src="http://tirania.org/shots/1101091942LfvK58IN.png">
+	</center>
+
+	<p>Pretty amazing, considering that Frank only learned to use
+	MonoMac yesterday (although he does have extensive MonoTouch
+	experience). 
+	
+<h3>MacDoc Sample</h3>
+
+	<p>During the holidays,
+	I <a href="https://github.com/mono/monomac/tree/master/samples/macdoc">wrote
+	MacDoc</a> a native front-end for the
+	<a href="http://www.mono-project.com/Monodoc">MonoDoc
+	documentation engine</a>.   I also took Jonathan Pobst's
+	<a href="https://github.com/jpobst/Kipunji">fabulous style
+	sheets from Kipunji</a> to spice up the UI a little bit.
+
+	<p>This is the result:
+
+	<center>
+	<img src="http://tirania.org/images/monomac-macdoc.png">
+	</center>
+
+	<p>I still have to integrate the index and search features of
+	MonoDoc into the UI, and I am struggling as to how to
+	surface them in the UI.
+
+	<p>The Index is supposed to have an alphabetical listing of
+	classes, method, properties, fields, similar to the index at
+	the end of a book.   I always found this to be very useful
+	when developing with .NET.     The search functionality on the
+	other hand uses Lucene to search in the documentation body.
+
+	<p>At this point, I believe that I should add a tabbed
+	widgets, and let the user pick between the tree view on the
+	left and the index (with a new text-entry to do the
+	incremental search).   But if the users uses the search on the
+	toolbar, I should replace the tree and the index with a list
+	of results.
+
+	<p>Does the above make sense, or you think it is a terrible UI
+	idea and completely unacceptable for OSX users?
+
+	<p>I thought about merging the index and the body search, but
+	it would render the index search a bit useless.   Anyways, if
+	you are a Mac expert, please send feedback my way.

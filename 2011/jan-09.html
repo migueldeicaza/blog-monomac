@@ -1,0 +1,107 @@
+<h1>Mono Packager and the Apple AppStore</h1>
+
+	<p>We are happy to announce
+	the <a href="http://www.mono-project.com/MonomacPackager">Mono
+	Packager for OSX</a>.   
+
+	<center>
+	<img src="http://mono-project.com/files/2/2a/Md-monomac-bundle.png">
+	<br>
+	MonoDevelop UI for Mac Packages and Installers.
+	</center>
+
+	<p>The Mono Packager for OSX makes it possible to create
+	self-contained Mono applications that will run on OSX without
+	requiring the Mono.framework to be previously installed on the
+	system.  In combination with
+	the <a href="http://www.mono-project.com/MonoMac">MonoMac
+	project</a> you can build fully native MacOS X applications
+	using your favorite .NET technologies.   From your choice of
+	Mono/.NET languages, to your choice of Mono/.NET library. 
+
+	<p>The packager can create both signed applications for
+	distribution on the Mac AppStore, as well as creating
+	installers for your software.
+
+<h3>Mono on the Mac: Some Background</h3>
+
+	<p>Mono on OSX has historically been distributed as an image
+	that installed itself in /Library/Frameworks/Mono.framework.
+	Once Mono was installed, users could write code in 
+	C# or their favorite .NET/Mono language and run the resulting
+	executable.
+
+	<p>The problem is that Mono.framework contains an entire
+	development stack: compilers, GUI tools, command line tools,
+	libraries, documentation which is convenient for developers,
+	but most of the time, not very useful for end-users.
+
+	<p>This meant that developers would typically ask users to
+	first install the Mono.framework (a big download) and then
+	they could install their applications.    
+
+	<p>To work around that problem, some developers have chosen to
+	manually embed Mono in their applications.  This has always
+	been possible, but it was error-prone as developers would have
+	to manually assemble Mono into their application bundle,
+	configure Mono properly, and initialize the Mono runtime
+	themselves.   Doable, but not pleasant. 
+
+	<p>With today's release, we have taken the burden of creating
+	self-contained Mono applications out of developer's hands and
+	added it as a standard feature for developers to use.
+
+<h3>The Mac AppStore</h3>
+
+	<p>The Mac AppStore requires that applications submitted to it
+	are completely self-contained and they do not depend on
+	third-party frameworks to be installed on the system.   It
+	also requires that your application and installer be signed.
+
+	<p>Both of those features are supported in our MonoMac
+	Packager.   Developers can now create Mac AppStore ready
+	applications using MonoDevelop and MonoMac.   We have
+	integrated the package creation, installer creation, and
+	signing processes into our MonoDevelop IDE.
+
+	<p>All that developers have to do is sign up for Apple's
+	Mac developer program, get their distribution certificates,
+	build a fabulous application and upload the application using
+	the Application Loader to Apple.com.
+
+<h3>Upcoming: Linking</h3>
+
+	<p>In this version of the Mac bundler, we include all of the
+	depedencies that your program takes.   For example, if you use
+	the System.Xml library, the entire System.Xml library will be
+	bundled with the application.
+
+	<p>In our next release, we will add support
+	for <a href="http://www.mono-project.com/Linker">Mono's
+	linker</a>, the same technology we used in MonoTouch to reduce
+	the executable size.
+
+	<p>When you choose to use use the linker, the granularity of
+	distribute changes from the library-level to the type level.
+	For example, if you only use one type from System.Xml, the
+	linker will strip out all of the unused classes and generate a
+	new System.Xml library that only contains the one type that
+	you used.
+
+	<p>We did not want to wait for the linker to be ready before
+	shipping our packager, but we should have it ready soon.
+	
+<h3>MonoMac Refresh</h3>
+
+	<p>As part of this release we have also issued a refresh to
+	the MonoMac library and templates.
+
+	<p>From now on, MonoMac binaries will default to be 4.0
+	profile, allowing users to leverage all of the new features in
+	the C# 4.0 language (like <tt>dynamic</tt>) as well as the new
+	.NET 4.0 APIs that we introduced with Mono 2.8.
+
+	<p>The updates to the MonoMac API are described
+	in <a href="http://tirania.org/monomac/archive/2011/Jan-09-1.html">my
+	other blog post</a>.
+
